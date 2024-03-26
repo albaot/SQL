@@ -1,0 +1,96 @@
+/*Create clothing table*/
+CREATE TABLE clothing (id INTEGER, item TEXT, color TEXT, quantity INTEGER, price REAL);
+
+/*Insert the data*/
+INSERT INTO clothing VALUES (1, 'jeans', 'blue', 20, 29.99);
+INSERT INTO clothing VALUES (2, 'tshirt', 'white', 30, 12.99);
+INSERT INTO clothing VALUES (3, 'jumper', 'red', 58, 25.99);
+INSERT INTO clothing VALUES (4, 'shoes', 'brown', 63, 60);
+INSERT INTO clothing VALUES (5, 'jumper', 'white', 24, 29.99);
+INSERT INTO clothing VALUES (6, 'jeans', 'grey', 35, 32.99);
+INSERT INTO clothing VALUES (7, 'pants', 'yellow', 2, 44.99);
+INSERT INTO clothing VALUES (8, 'bag', 'black', 11, 75);
+INSERT INTO clothing VALUES (9, 'sunglasses', 'orange', 1, 15.99);
+INSERT INTO clothing VALUES (10, 'top', 'white', 19, 9.99);
+INSERT INTO clothing VALUES (11, 'bag', 'brown', 9, 69.99);
+INSERT INTO clothing VALUES (12, 'sunglasses', 'blue', 46, 12.99);
+INSERT INTO clothing VALUES (13, 'shoes', 'pink', 37, 84);
+INSERT INTO clothing VALUES (14, 'tshirt', 'green', 6, 15.99);
+INSERT INTO clothing VALUES (15, 'tshirt', 'red', 9, 5.99);
+INSERT INTO clothing VALUES (16, 'jeans', 'black', 25, 25.99);
+
+/*View of the data*/
+SELECT *
+FROM clothing;
+
+/*How many of the items in the table are in each category?*/
+SELECT item, COUNT(item)
+FROM clothing
+GROUP BY item;
+
+/*Order items by price (greater to lower)*/
+SELECT item, price
+FROM clothing 
+ORDER BY price DESC;
+
+/*How much does each item cost by color?*/
+SELECT item, color, SUM(price)
+FROM clothing
+GROUP BY color;
+
+/*Which items cost less than 8€?*/
+SELECT *
+FROM clothing
+WHERE price < 8;
+
+/*Which items cost more than 20€ and the color is black?*/clothing
+SELECT *
+FROM clothing
+WHERE price > 20 AND color = 'black';
+
+/*Group items by color and get the total quantity for each color*/
+SELECT color, SUM(quantity) AS itemspercolor
+FROM clothing
+GROUP BY color;
+
+/*Average price of tshirts*/
+SELECT item, AVG(price) AS avg_price_tshirts
+FROM clothing
+WHERE item = 'tshirt';
+
+/*Find all items that start with a 't'*/
+SELECT id, item
+FROM clothing
+WHERE item LIKE 'T%';
+
+/*Calculate the total quantity and average price for each color, excluding items priced above 40€*/
+SELECT color, SUM(quantity) AS total_quantity, AVG(price) AS avg_price
+FROM clothing
+WHERE price <= 40
+GROUP BY color;
+
+/*Find the items with the minimum and maximum quantities in stock*/
+/*Option 1 - Subqueries*/
+SELECT *
+FROM clothing
+WHERE quantity = (SELECT MIN(quantity) FROM clothing);
+SELECT *
+FROM clothing
+WHERE quantity = (SELECT MAX(quantity) FROM clothing);
+
+/*Option 2 - MIN, MAX and LIMIT*/
+SELECT * FROM clothing
+ORDER BY quantity ASC
+LIMIT 1;
+SELECT * FROM clothing
+ORDER BY quantity DESC
+LIMIT 1;
+
+/*Option 3 - Single query*/
+SELECT item, quantity,
+  CASE WHEN quantity = (SELECT MIN(quantity) FROM clothing) THEN 'Min Quantity'
+       WHEN quantity = (SELECT MAX(quantity) FROM clothing) THEN 'Max Quantity'
+       ELSE NULL
+  END AS quantity_status
+FROM clothing
+WHERE quantity_status IS NOT NULL;
