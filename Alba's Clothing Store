@@ -43,7 +43,7 @@ SELECT *
 FROM clothing
 WHERE price < 8;
 
-/*Which items cost more than 20€ and the color is black?*/clothing
+/*Which items cost more than 20€ and the color is black?*/
 SELECT *
 FROM clothing
 WHERE price > 20 AND color = 'black';
