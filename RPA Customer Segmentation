@@ -1,1 +1,53 @@
+--RPA Customer Segmentation
 
+--First I'm getting a feel for the 'users' table:
+select *
+from users
+limit 10;
+/*id	email	campaign	test	created_at	birthday
+1	gchesshire0@ucoz.ru			2017-01-26	1982-04-17
+2	rbritner1@is.gd			2017-10-08	1970-01-16
+3	acoysh2@canalblog.com			2017-09-05	1986-08-11*/
+--As we can see, there are some missing values in 2 of the columns (campaign and test)
+
+--The marketing department wants to send a Born in the 80s email to the appropriate users
+--Find the email addresses and birthdays of users whose birthday is between 1980-01-01 and 1989-12-31
+select email, birthday
+from users
+where birthday between '1980-01-01' and '1989-12-31'
+order by birthday;
+
+--We are interested in the group of users that signed up prior to May 2017
+--Find the emails and creation date of users whose created_at date matches this condition
+select email, created_at
+from users
+where created_at < '2017-05-01'
+order by created_at;
+
+--There was an A/B test performed on users that used cute animal clipart to encourage users to sign up
+--We’d like to see how the group that was shown bears is performing
+--Find the emails of the users who received the bears test
+select email
+from users
+where test = 'bears';
+
+--4 advertising campaigns were run over this period. There were two sets of ad copy (set 1 and set 2)
+--and both were run on two search engine sites (AAA and BBB). The resulting campaign values are:
+--AAA-1
+--AAA-2
+--BBB-1
+--BBB-2
+--Find all the emails of all users who received a campaign on website BBB
+select email
+from users
+where campaign like 'BBB%';
+
+--Find all the emails of all users who received ad copy 2 in their campaign
+select email
+from users
+where campaign like '%2';
+
+--Find the emails for all users who received both a campaign and a test
+select email
+from users
+where campaign is not null and test is not null;
