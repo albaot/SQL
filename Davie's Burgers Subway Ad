@@ -1,0 +1,30 @@
+--DAVIE'S BURGERS SUBWAY AD
+--The restaurant business has been booming and it is now looking to place a catchy advertisement in the local subway station.
+--Help them dig into their orders table to see if there is anything interesting in there for a funny tagline
+
+--First, I'm going to get a feel for the orders table:
+select *
+from users
+limit 10;
+/*id	user_id	order_date	restaurant_id	item_name	special_instructions
+1	43	2017-05-10	6	Beef Enchilada	ketchup
+2	9	2017-06-30	3	Samosa	*/
+--We can tell the column special_instructions has missing values
+
+--If we want to see how recent the data is:
+select distinct order_date
+from orders
+order by order_date;
+--We see the orders go from 2017-05-03 to 2017-06-30
+
+--We're going to rename the special instructions column as well as the id column:
+select id as '#', special_instructions as 'notes'
+from orders;
+/*#	notes
+...
+15	Draw a dragon fighting flamingo on the pizza box.
+16	The spider on the front porch is Frank. Frank guards the tomatoes. Be nice to Frank.
+...*/
+
+--Now with all these notes, the marketing team will choose the ones they think are the funniest and work out a subway ad out of them
+
