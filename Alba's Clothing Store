@@ -70,7 +70,7 @@ WHERE price <= 40
 GROUP BY color;
 
 --Find the items with the minimum and maximum quantities in stock
---Option 1 - Subqueries*/
+--Option 1 - Subqueries
 SELECT *
 FROM clothing
 WHERE quantity = (SELECT MIN(quantity) FROM clothing);
@@ -78,7 +78,7 @@ SELECT *
 FROM clothing
 WHERE quantity = (SELECT MAX(quantity) FROM clothing);
 
---Option 2 - MIN, MAX and LIMIT
+--Option 2 - ORDER BY and LIMIT
 SELECT * FROM clothing
 ORDER BY quantity ASC
 LIMIT 1;
@@ -88,9 +88,10 @@ LIMIT 1;
 
 --Option 3 - Single query
 SELECT item, quantity,
-  CASE WHEN quantity = (SELECT MIN(quantity) FROM clothing) THEN 'Min Quantity'
-       WHEN quantity = (SELECT MAX(quantity) FROM clothing) THEN 'Max Quantity'
-       ELSE NULL
+  CASE
+    WHEN quantity = (SELECT MIN(quantity) FROM clothing) THEN 'Min Quantity'
+    WHEN quantity = (SELECT MAX(quantity) FROM clothing) THEN 'Max Quantity'
+    ELSE NULL
   END AS quantity_status
 FROM clothing
 WHERE quantity_status IS NOT NULL;
