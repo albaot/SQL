@@ -1,66 +1,63 @@
-/*New York Restaurants*/
+--New York Restaurants
 
-/*Our table is called 'nomnom' and this is its schema:
+/*Our table is 'nomnom' and this is its schema:
 - name
 - neighborhood
 - cuisine
 - review
 - price
-- health 
-*/
+- health */
 
-/*Let's take a look at the data:*/
+--Let's take a look at the data:
 select *
 from nomnom;
-/*
-name	neighborhood	cuisine	review	price	health
+/* name	neighborhood	cuisine	review	price	health
 Peter Luger Steak House	Brooklyn	Steak	4.4	$$$$	A
 Jongro BBQ	Midtown	Korean	4.5	$$	A
-Pocha 32	Midtown	Korean	4	$$	A
-*/
+Pocha 32	Midtown	Korean	4	$$	A */
 
-/*Distinct neighborhoods*/
+--Distinct neighborhoods
 select distinct neighborhood
 from nomnom;
 
-/*Restaurant options if we want chinese food?*/
+--Restaurant options if we want chinese food?
 select *
 from nomnom
 where cuisine = 'Chinese';
 
-/*Restaurants with a rating of 4 or above and order from best to worst*/
+--Restaurants with a rating of 4 or above and order from best to worst
 select *
 from nomnom
 where review >= 4
 order by review desc;
 
-/*We want to have a fancy dinner at an Italian restaurant ($$$)*/
+--We want to have a fancy dinner at an Italian restaurant ($$$)
 select *
 from nomnom
 where cuisine = 'Italian' and price = '$$$';
 
-/*We can't remember the whole name of a restaurant but we know it contains 'meatballs' in the name, so we're going to try find it*/
+--We can't remember the whole name of a restaurant but we know it contains 'meatballs' in the name, so we're going to try find it
 select name
 from nomnom
 where name like '%meatball%';
 
-/*We want to order food nearby, so we look for restaurants in Midtown, Downtown or Chinatown*/
+--We want to order food nearby, so we look for restaurants in Midtown, Downtown or Chinatown
 select name
 from nomnom
 where neighborhood = 'Midtown' or neighborhood = 'Downtown' or neighborhood = 'Chinatown';
 
-/*All health grade pending restaurants*/
+--All health grade pending restaurants
 select name
 from nomnom
 where health is null;
 
-/*Top 10 restaurants ranking based on the reviews*/
+--Top 10 restaurants ranking based on the reviews
 select *
 from nomnom
 order by review desc
 limit 10;
 
-/*Change the rating system*/
+--Change the rating system
 select name,
   case 
     when review > 4.5 then 'Extraordinary'
