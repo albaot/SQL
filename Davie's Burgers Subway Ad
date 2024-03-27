@@ -11,7 +11,7 @@ limit 10;
 2	9	2017-06-30	3	Samosa	*/
 --We can tell the column special_instructions has missing values
 
---If we want to see how recent the data is:
+--If we wanted to see how recent the data is:
 select distinct order_date
 from orders
 order by order_date;
