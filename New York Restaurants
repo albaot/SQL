@@ -8,7 +8,7 @@
 - price
 - health */
 
---Let's take a look at the data:
+--General overview of the data in the nomnom table and understanding of the columns:
 select *
 from nomnom;
 /* name	neighborhood	cuisine	review	price	health
@@ -16,11 +16,11 @@ Peter Luger Steak House	Brooklyn	Steak	4.4	$$$$	A
 Jongro BBQ	Midtown	Korean	4.5	$$	A
 Pocha 32	Midtown	Korean	4	$$	A */
 
---Distinct neighborhoods
+--Identify all unique neighborhoods where restaurants are located
 select distinct neighborhood
 from nomnom;
 
---Restaurant options if we want chinese food?
+--What are the restaurant options we want chinese food?
 select *
 from nomnom
 where cuisine = 'Chinese';
@@ -46,7 +46,7 @@ select name
 from nomnom
 where neighborhood = 'Midtown' or neighborhood = 'Downtown' or neighborhood = 'Chinatown';
 
---All health grade pending restaurants
+--We want to know what restaurants are pending the health grade
 select name
 from nomnom
 where health is null;
