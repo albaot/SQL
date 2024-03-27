@@ -20,7 +20,7 @@ Pocha 32	Midtown	Korean	4	$$	A */
 select distinct neighborhood
 from nomnom;
 
---What are the restaurant options we want chinese food?
+--What are the restaurant options if we want chinese food?
 select *
 from nomnom
 where cuisine = 'Chinese';
