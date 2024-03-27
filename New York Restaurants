@@ -50,6 +50,22 @@ where neighborhood = 'Midtown' or neighborhood = 'Downtown' or neighborhood = 'C
 select name
 from nomnom
 where health is null;
+--We have 3 options to continue with these missing values:
+--Option 1: exclude the restaurants without a health grade
+select *
+from nomnom
+where health is not null;
+--Option 2: replace the missing values with a placeholder, so if the 'health' value is null, it replaces it with 'N/A'
+select *,
+  coalesce(health, 'N/A') AS health
+from nomnom;
+--Option 3: flag restaurants with missing health grades as 'Missing', without altering the original values
+select name,
+  case
+    when health is null then 'Missing'
+    else health
+  end as health_status
+from nomnom;
 
 --Top 10 restaurants ranking based on the reviews
 select *
