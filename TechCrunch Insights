@@ -1,0 +1,95 @@
+-- TECHCRUNCH INSIGHTS
+
+--It’s your first day as a TechCrunch reporter. Your first task is to write an article on the rising trends in the startup world.
+--To get you started with your research, your boss emailed you a project.sqlite file that contains a table called startups.
+--It is a portfolio of some of the biggest names in the industry.
+
+--First, let's take a look at the table
+SELECT *
+FROM startups;
+
+-- This is the kind of data we will be working with:
+/*name	location	category	employees	raised	valuation	founded	stage	ceo	info
+Pied Piper	Silicon Valley	Cloud Computing	6	5000000	50000000	2014	A	Richard Hendricks	A Middle-Out Compression Solution
+Hooli	Silicon Valley	Enterprise	9000	580000000	49500000000	1997		Gavin Bensen	Hooli Is About People*/
+
+--Total number of companies
+SELECT DISTINCT COUNT(name) AS total_companies
+FROM startups;
+
+--We want to know the total value of all companies
+SELECT SUM(valuation) AS total_value
+FROM startups;
+
+--What are the highest and lowest amount raised by a startup?
+SELECT name, MAX(raised) AS max_raised
+FROM startups;
+/*name	max_raised
+REBU	11500000000*/
+
+SELECT name, MIN(raised) AS max_raised
+FROM startups;
+/*name	min_raised
+Fakeblock	3*/
+
+--What is the maximum amount of money raised during ‘Seed’ stage?
+SELECT name, MAX(raised) AS max_raised
+FROM startups
+WHERE stage = 'Seed';
+/*name	max_raised_seed
+Voice2Txt	1800000*/
+
+--In what year was the oldest company on the list founded?
+SELECT name, founded
+FROM startups
+ORDER BY 2
+LIMIT 1;
+
+--Let's find out the valuations among different sectors
+--Average valuation in each category, round averages to 2 decimal places and order the list from highest averages to lowest.
+SELECT ROUND(AVG(valuation),2) as avg_val
+FROM startups
+GROUP BY category
+ORDER BY avg_val DESC;
+
+--What are the most competitive markets?
+--Name of each category with the total number of companies that belong to each one of them
+SELECT category, COUNT(*) AS comp_by_cat
+FROM startups
+GROUP BY category;
+
+--Now we only want to include categories that have more than 3 companies in them.
+SELECT category, COUNT(*) AS comp_by_cat
+FROM startups
+GROUP BY category
+HAVING comp_by_cat > 3
+ORDER BY 2 DESC;
+
+--What are the most competitive markets?
+/*category	comp_by_cat
+Social	12
+Mobile	10
+Education	5*/
+--The most competitive market is Social, Mobile and Education
+
+--Are there any differences in startups sizes among different locations?
+
+--First we're going to calculate the average size of a startup in each location:
+SELECT location, ROUND(AVG(employees),0) AS avg_size
+FROM startups
+GROUP BY location
+ORDER BY avg_size DESC;
+
+-- Now we're going to calculate the average size of a startup in each location, with average sizes above 500
+SELECT location, ROUND(AVG(employees),0) AS avg_size
+FROM startups
+GROUP BY location
+HAVING avg_size > 500
+ORDER BY avg_size DESC;
+
+/*The results are:
+location	avg_size
+San Francisco	1920.0
+Silicon Valley	1805.0
+New York	703.0
+Brooklyn	503.0*/
