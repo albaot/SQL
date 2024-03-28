@@ -1,0 +1,61 @@
+--CODEFLIX
+
+--A streaming video company, needs help analyzing their user data.
+--The database contains 3 tables:
+-- - users contains the basic account details for each user (id, first_name, last_name, email. password)
+-- - payments contains payment details for a 3 month period (id, user_id, amount, status, pay_date)
+-- - watch_history contains watch events for the users (id, user_id, watch_date, watch_in_duration_minutes)
+
+--We want to determine the number of users that have an email ending in ‘.com’
+SELECT COUNT(*)
+FROM users
+WHERE email LIKE '%.com';
+
+--What are the most popular first names on Codeflix? Display most popular names first
+SELECT first_name, COUNT(*) AS popularity
+FROM users
+GROUP BY first_name
+ORDER BY popularity DESC;
+
+--The UX Research team wants to see a distribution of watch durations. They want the result to contain:
+-- - duration (watch event duration, rounded to the closest minute)
+-- - count (number of watch events falling into this “bucket”)
+SELECT ROUND(watch_duration_in_minutes,0) AS duration, COUNT(watch_date) AS count
+FROM watch_history
+GROUP BY duration
+ORDER BY duration;
+
+--Find all the users that have successfully made a payment to Codeflix and find their total amount paid
+--Sort them by their total payments (from high to low)
+SELECT user_id, SUM(amount) AS total_paid
+FROM payments
+WHERE status = 'paid'
+GROUP BY user_id
+ORDER BY total_paid DESC;
+
+--Generate a table of user ids and total watch duration for users who watched more than 400 minutes of content.
+SELECT user_id, SUM(watch_duration_in_minutes) AS total_watch
+FROM watch_history
+GROUP BY user_id
+HAVING total_watch > 400;
+
+--To the nearest minute, how many minutes of content were streamed on Codeflix?
+SELECT ROUND(SUM(watch_duration_in_minutes),0) AS total_minutes
+FROM watch_history;
+
+--Which days in this period did Codeflix collect the most money?
+SELECT pay_date, SUM(amount) AS total_money
+FROM payments
+WHERE status = 'paid'
+GROUP BY pay_date
+ORDER BY total_money DESC;
+
+--When users successfully pay Codeflix, what is the average payment amount?
+SELECT AVG(amount) AS avg_payment
+FROM payments
+WHERE status = 'paid';
+
+--Of all the events in the watch_history table, what is the duration of the longest individual watch event? What is the duration of the shortest?
+SELECT MAX(watch_duration_in_minutes) AS longest_watch, MIN(watch_duration_in_minutes) AS shortest_watch
+FROM watch_history;
+
