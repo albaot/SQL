@@ -1,1 +1,29 @@
+--Hacker News is a popular website run by Y Combinator. It’s widely known by people in the tech industry
+--as a community site for sharing news, showing off projects, asking questions, among other things.
+--In this project, we will be working with a table named hacker_news that contains stories from Hacker News
+--since its launch in 2007.
 
+--It has the following columns:
+-- title: the title of the story
+-- user: the user who submitted the story
+-- score: the score of the story
+-- timestamp: the time of the story
+-- url: the link of the story
+
+--Understanding of the dataset:
+ SELECT *
+ FROM hacker_news
+ LIMIT 10;
+--We see there's some columns with missing data
+/*title	user	score	timestamp	url
+coldtea		2014-01-27T17:31:13Z	
+etanol		2011-10-23T18:46:40Z	*/
+
+--Top 5 most popular Hacker News stories
+ SELECT *
+ FROM hacker_news
+ ORDER BY score DESC
+ LIMIT 5;
+
+--Recent studies have found that online forums tend to be dominated by a small percentage of their users (1-9-90 Rule).
+--Is this true of Hacker News? Is a small percentage of Hacker News submitters taking the majority of the points?
