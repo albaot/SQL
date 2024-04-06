@@ -1,0 +1,67 @@
+
+
+                                                                  --INNER JOIN WITH PRIMARY AND FOREIGN KEYS
+--Suppose Columbia University has two tables in their database:
+--The classes table contains information on the classes that the school offers. Its primary key is id.
+--The students table contains information on all students in the school. Its primary key is id. It contains the foreign key class_id, which corresponds to the primary key of classes.
+--Perform an inner join of classes and students using the primary and foreign keys described above, and select all the columns.
+--Option 1
+SELECT *
+FROM classes AS c
+JOIN students AS s
+ON c.id = s.class_id;
+--Option 2
+SELECT *
+FROM classes
+JOIN students
+ON classes.id = students.class_id;
+(you can also add an ORDER BY, select different variables, ORDER BY groups...)
+
+                                                                                  --CROSS JOIN
+--Let’s start by counting the number of customers who were subscribed to the newspaper during March.
+--Use COUNT(*) to count the number of rows and a WHERE clause to restrict to two conditions: start_month <= 3, end_month >= 3
+SELECT COUNT(*)
+FROM newspaper
+WHERE start_month <= 3 AND end_month >= 3;
+--The previous query lets us investigate one month at a time. In order to check across all months, we’re going to need to use a cross join.
+--Our database contains another table called months which contains the numbers between 1 and 12.
+--Select all columns from the cross join of newspaper and months.
+SELECT *
+FROM newspaper
+CROSS JOIN months;
+--Create a third query where you add a WHERE statement to your cross join to restrict to two conditions: start_month <= month, end_month >= month.
+--This will select all months where a user was subscribed.
+SELECT *
+FROM newspaper
+CROSS JOIN months
+WHERE start_month <= month AND end_month >= month;
+--Create a final query where you aggregate over each month to count the number of subscribers.
+SELECT month, COUNT(*)
+FROM newspaper
+CROSS JOIN months
+WHERE start_month <= month AND end_month >= month
+GROUP BY month;
+
+                                                                                      --UNION
+--Let’s return to our newspaper and online subscriptions. We’d like to create one big table with both sets of data.
+--Stack the newspaper table on top of the online table.
+SELECT *
+FROM newspaper
+UNION
+SELECT *
+FROM online;
+
+                                                                                      --WITH
+--Our marketing department might want to know a bit more about our customers. For instance, they might want to know how many magazines each customer subscribes to. 
+WITH previous_query AS (
+SELECT customer_id,
+   COUNT(subscription_id) AS 'subscriptions'
+FROM orders
+GROUP BY customer_id
+)
+SELECT customers.customer_name, previous_query.subscriptions
+FROM previous_query
+JOIN customers
+ON previous_query.customer_id = customers.customer_id;
+
+
